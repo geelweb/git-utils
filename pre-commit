@@ -1,10 +1,21 @@
 #!/bin/bash
+#
+# Git pre-commit hook to check syntax and coding standard respects of php, js,
+# perl, python and bach files.
+#
+# license: MIT
+# author: Guillaume Luchet <guillaume@geelweb.org>
 
 php_files=$(git diff --cached --name-only | egrep \.php$)
 js_files=$(git diff --cached --name-only | egrep \.js$)
 perl_files=$(git diff --cached --name-only | egrep '\.pl|pm$')
 python_files=$(git diff --cached --name-only | egrep \.py$)
 bash_files=$(git diff --cached --name-only | egrep \.sh$)
+
+pylint="pylint"
+# Uncomment the next line if your project is a django project
+# TODO try to detect the project is a django project
+#pylint="django-lint"
 
 if [ "$php_files" != "" ]; then
     # check syntax on php files
@@ -30,8 +41,8 @@ fi
 
 if [ "$python_files" != "" ]; then
     # check syntax on python files
-    output=$(echo $python_files | xargs pylint)
-    [ $? -gt 0 ] && echo "Python Coding Standards checks failed (pylint)" >&2 && exit 1
+    output=$(echo $python_files | xargs $pylint)
+    [ $? -gt 0 ] && echo "Python Coding Standards checks failed ($pylint)" >&2 && exit 1
 fi
 
 if [ "$bash_files" != "" ]; then
