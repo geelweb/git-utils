@@ -45,7 +45,11 @@ if [ "$perl_files" != "" ]; then
 fi
 
 if [ "$python_files" != "" ]; then
-    # check syntax on python files
+    # check syntax on python files with pep8...
+    output=$(echo $python_files | xargs pep8 --max-line-length=120)
+    [ $? -gt 0 ] && echo "$output\nPython Coding Standards checks failed (pep8 --max-line-length=120)" >&2 && exit 1
+
+    # ... and with pylint or django-lint
     output=$(echo $python_files | xargs $pylint)
     [ $? -gt 0 ] && echo "Python Coding Standards checks failed ($pylint)" >&2 && exit 1
 fi
