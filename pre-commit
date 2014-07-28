@@ -6,11 +6,15 @@
 # license: MIT
 # author: Guillaume Luchet <guillaume@geelweb.org>
 
-php_files=$(git diff --cached --name-only | egrep \.php$)
-js_files=$(git diff --cached --name-only | egrep \.js$)
-perl_files=$(git diff --cached --name-only | egrep '\.pl|pm$')
-python_files=$(git diff --cached --name-only | egrep \.py$)
-bash_files=$(git diff --cached --name-only | egrep \.sh$)
+# finds files to checks
+git_diff='git diff --cached --name-only --diff-filter="A|M"'
+
+php_files=$($git_diff | egrep \.php$)
+js_files=$($git_diff | egrep \.js$)
+perl_files=$(echo $files | egrep '\.pl|pm$')
+python_files=$($git_diff | egrep \.py$)
+bash_files=$($git_diff | egrep \.sh$)
+
 
 pylint="pylint"
 # Uncomment the next line if your project is a django project
