@@ -25,23 +25,23 @@ pylint="pylint --disable=C0301"
 if [ "$php_files" != "" ]; then
     # check syntax on php files
     output=$(echo $php_files | xargs -n1 php -l)
-    [ $? -gt 0 ] && echo "PHP Syntax checks failed (php -l)" >&2 && exit 1
+    [ $? -gt 0 ] && echo "$output\nPHP Syntax checks failed (php -l)" >&2 && exit 1
 
     # check coding standards on php files
     output=$(echo $php_files | xargs phpcs --standard=ZEND)
-    [ $? -gt 0 ] && echo "PHP Coding Standards checks failed (phpcs --standard=ZEND)" >&2 && exit 1
+    [ $? -gt 0 ] && echo "$output\nPHP Coding Standards checks failed (phpcs --standard=ZEND)" >&2 && exit 1
 fi
 
 if [ "$js_files" != "" ]; then
     # check coding standards on js files
     output=$(echo $js_files | xargs jslint)
-    [ $? -gt 0 ] && echo "Javascript Coding Sstandards checks failed (jslint)" >&2 && exit 1
+    [ $? -gt 0 ] && echo "$output\nJavascript Coding Sstandards checks failed (jslint)" >&2 && exit 1
 fi
 
 if [ "$perl_files" != "" ]; then
     # check syntax on perl files
     output=$(echo $perl_files | xargs -n1 perl -c)
-    [ $? -gt 0 ] && echo "Perl scripts compilation failed (perl -c)" >&2 && exit 1
+    [ $? -gt 0 ] && echo "$output\nPerl scripts compilation failed (perl -c)" >&2 && exit 1
 fi
 
 if [ "$python_files" != "" ]; then
@@ -51,16 +51,16 @@ if [ "$python_files" != "" ]; then
 
     # ... and with pylint or django-lint
     output=$(echo $python_files | xargs $pylint)
-    [ $? -gt 0 ] && echo "Python Coding Standards checks failed ($pylint)" >&2 && exit 1
+    [ $? -gt 0 ] && echo "$output\nPython Coding Standards checks failed ($pylint)" >&2 && exit 1
 fi
 
 if [ "$bash_files" != "" ]; then
     # Chech syntax on bash files
     output=$(echo $bash_files | xargs -n1 bash -n)
-    [ $? -gt 0 ] && echo "Syntax error found in bash files (bash -n)" >&2 && exit 1
+    [ $? -gt 0 ] && echo "$output\nSyntax error found in bash files (bash -n)" >&2 && exit 1
 
     # Chech bashisms on bash files
     output=$(echo $bash_files | xargs checkbashisms -f)
-    [ $? -gt 0 ] && echo "Errors found on bash scripts (checkbashism -f)" >&2 && exit 1
+    [ $? -gt 0 ] && echo "$output\nErrors found on bash scripts (checkbashism -f)" >&2 && exit 1
 fi
 
