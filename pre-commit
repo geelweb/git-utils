@@ -15,8 +15,9 @@ perl_files=$(echo $files | egrep '\.pl|pm$')
 python_files=$($git_diff | egrep \.py$)
 bash_files=$($git_diff | egrep \.sh$)
 
+# Use pylint disabling messages about max line length
+pylint="pylint --disable=C0301"
 
-pylint="pylint"
 # Uncomment the next line if your project is a django project
 # TODO try to detect the project is a django project
 #pylint="django-lint"
